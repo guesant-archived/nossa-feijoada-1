@@ -1,7 +1,7 @@
 import express from 'express';
 import auth from '../auth';
 import * as controller from '../../../../controllers/UserController';
-import validationMiddleware from '../../../../midllewares/validation-middleware';
+import validationMiddleware from '../../../../middlewares/validation-middleware';
 
 const routes = express.Router();
 routes.get('/', auth.required, controller.ControllerShowMe.default);
