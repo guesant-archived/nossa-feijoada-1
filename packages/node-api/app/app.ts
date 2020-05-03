@@ -56,10 +56,12 @@ if (!isProduction) {
       res.status(err.status || 500);
 
       res.json({
-        errors: {
-          message: err.message,
-          error: err,
-        },
+        errors: [
+          {
+            msg: err.message,
+            error: err,
+          },
+        ],
       });
     }
   );
@@ -71,10 +73,12 @@ app.use(
   (err: ErrorHandlerArg, _req: express.Request, res: express.Response) => {
     res.status(err.status || 500);
     res.json({
-      errors: {
-        message: err.message,
-        error: {},
-      },
+      errors: [
+        {
+          msg: err.message,
+          error: {},
+        },
+      ],
     });
   }
 );

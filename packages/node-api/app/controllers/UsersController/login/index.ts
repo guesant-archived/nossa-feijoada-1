@@ -1,15 +1,14 @@
+import { check } from 'express-validator';
 import { RequestHandler } from 'express';
 import { UserDoc } from '../../../models/User';
 import passport from '../../../config/passport';
 
-const ControllerLogin: RequestHandler = async (req, res, next) => {
-  if (!req.body.account.email) {
-    return res.status(422).json({ errors: { email: "can't be blank" } });
-  }
-  if (!req.body.account.password) {
-    return res.status(422).json({ errors: { password: "can't be blank" } });
-  }
+export const validation = [
+  check('account.email').isEmail().normalizeEmail(),
+  check('account.password').isLength({ min: 5 }),
+];
 
+const ControllerLogin: RequestHandler = async (req, res, next) => {
   passport.authenticate(
     'user',
     { session: false },
