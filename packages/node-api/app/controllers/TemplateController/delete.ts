@@ -4,7 +4,7 @@ import { Template } from '../../models';
 const ControllerDelete: RequestHandler = async (req, res, next) => {
   return Template.findById(req.params.id)
     .then(async (template) => {
-      if (!template || template.author !== (req as any).payload.id) {
+      if (!template || template.author.toHexString() !== (req as any).payload.id) {
         return res.sendStatus(401);
       }
 

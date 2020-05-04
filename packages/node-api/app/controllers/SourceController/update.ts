@@ -7,7 +7,7 @@ export { validation };
 const ControllerUpdate: RequestHandler = async (req, res, next) => {
   Source.findById(req.params.id)
     .then((source) => {
-      if (!source || source.author !== (req as any).payload.id)
+      if (!source || source.author.toHexString() !== (req as any).payload.id)
         return res.sendStatus(401);
 
       const { author, name, description, data: data } = req.body;

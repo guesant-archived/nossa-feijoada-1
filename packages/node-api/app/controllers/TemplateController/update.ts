@@ -7,7 +7,7 @@ export { validation };
 const ControllerUpdate: RequestHandler = async (req, res, next) => {
   Template.findById(req.params.id)
     .then((template) => {
-      if (!template || template.author !== (req as any).payload.id)
+      if (!template || template.author.toHexString() !== (req as any).payload.id)
         return res.sendStatus(401);
 
       const { author, name, description, template: templateData } = req.body;
