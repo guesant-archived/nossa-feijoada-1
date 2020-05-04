@@ -2,7 +2,7 @@ import crypto = require('crypto');
 import mongoose from 'mongoose';
 import uniqueValidator from 'mongoose-unique-validator';
 import jwt from 'jsonwebtoken';
-import config from '../config';
+import config from '../../config';
 
 export const AccountSchemaDefinition: mongoose.SchemaDefinition = {
   username: {
