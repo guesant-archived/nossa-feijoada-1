@@ -1,3 +1,4 @@
+import env from './env';
 import cors from 'cors';
 import express from 'express';
 import mongoose from 'mongoose';
@@ -6,15 +7,18 @@ import errorhandler from 'errorhandler';
 import routes from './routes';
 import { ErrorHandlerArg } from './types/ErrorHandler';
 
-const PORT = process.env.PORT || 3000;
-const isProduction = process.env.NODE_ENV === 'production';
+const PORT = +(env.PORT || 3000);
+const isProduction = env.NODE_ENV === 'production';
 
 const app = express();
 
 app.use(cors());
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
-app.use(express.static(__dirname + '/public'));
+
+if (env.PUBLIC_PATH) {
+  app.use('public', express.static(env.PUBLIC_PATH));
+}
 
 if (!isProduction) {
   app.use(errorhandler());
@@ -24,11 +28,10 @@ mongoose.set('useNewUrlParser', true);
 mongoose.set('useUnifiedTopology', true);
 
 if (isProduction) {
-  const { MONGODB_URI } = process.env;
+  const { MONGODB_URI } = env;
   if (!MONGODB_URI) {
     console.warn('[warn] Please set MONGODB_URI');
-  }
-  if (MONGODB_URI) {
+  } else {
     mongoose.connect(MONGODB_URI);
   }
 } else {
@@ -63,7 +66,7 @@ if (!isProduction) {
           },
         ],
       });
-    }
+    },
   );
 }
 
@@ -80,7 +83,7 @@ app.use(
         },
       ],
     });
-  }
+  },
 );
 
 app.listen(PORT, () => {

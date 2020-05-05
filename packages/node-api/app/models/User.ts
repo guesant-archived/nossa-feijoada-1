@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import * as account from '../Account';
+import * as account from './Generic/Account';
 
 const UserSchema = account.getAccountSchema({
   name: String,
