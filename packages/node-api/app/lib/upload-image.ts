@@ -1,8 +1,9 @@
 import fs from 'fs';
 import { join } from 'path';
 import fileUpload from 'express-fileupload';
+import env from '../env';
 
-const { PUBLIC_PATH = '' } = process.env;
+const { PUBLIC_PATH = '' } = env;
 export const uploadImageOptions: fileUpload.Options = {
   abortOnLimit: true,
   safeFileNames: true,
