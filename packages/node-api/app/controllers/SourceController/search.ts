@@ -1,27 +1,29 @@
+import mongoose from 'mongoose';
 import { RequestHandler } from 'express';
 import { Source, User } from '../../models';
 
 const ControllerSearch: RequestHandler = async (req, res, next) => {
-  const search: any = {};
+  const search: any = { $or: [] };
   const { author, name, text, id } = req.query;
 
   if (typeof author === 'string' && author.trim()) {
     await User.findOne({ username: author })
       .then((user) => {
         if (user) {
-          search['author'] = user._id;
+          search['$or'].push({ author: user._id });
         }
       })
       .catch(() => {});
   }
-  if (id && typeof id === 'string') {
-    search['_id'] = id;
+  if (id && typeof id === 'string' && mongoose.isValidObjectId(id)) {
+    search['$or'].push({ _id: id });
   }
-  search['$text'] = {
-    $search: `${name || ''} ${text || ''}`,
-  };
+  const textSearch = `${text || ''}`.trim();
+  if (textSearch) {
+    search['$or'].push({ $text: { $search: textSearch } });
+  }
 
-  return Source.paginate(search, {
+  return Source.paginate(search['$or'].length ? search : {}, {
     page: +req.params.page || 1,
     limit: +req.params.limit || 30,
   })
