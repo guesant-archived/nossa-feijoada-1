@@ -14,7 +14,8 @@ const ControllerNew: RequestHandler = async (req, res, next) => {
     author: req.body.author || (req as any).payload.id,
     name: req.body.name,
     description: req.body.description || '',
-    data: req.body.data,
+    image: req.body.image || '',
+    imageTransparent: req.body.image || '',
   });
 
   source
