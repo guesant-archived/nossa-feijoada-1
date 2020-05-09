@@ -1,0 +1,8 @@
+{
+  "name": "@bsim/core",
+  "version": "0.0.1",
+  "main": "dist/build.cjs.js",
+  "repository": "https://github.com/guesant/nossa-feijoada.git",
+  "author": "Gabriel Rodrigues <jipacoding@gmail.com>",
+  "license": "MIT"
+}
