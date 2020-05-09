@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/guesant/node-api#readme",
   "dependencies": {
+    "aws-sdk": "^2.672.0",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
@@ -27,6 +28,8 @@
     "express": "^4.17.1",
     "express-fileupload": "^1.1.7-alpha.3",
     "express-jwt": "^5.3.3",
+    "express-rate-limit": "^5.1.3",
+    "express-slow-down": "^1.3.1",
     "express-validator": "^6.4.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.11",
@@ -34,6 +37,7 @@
     "mongoose-unique-validator": "^2.0.3",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
+    "sharp": "^0.25.2",
     "ts-node-dev": "^1.0.0-pre.44",
     "typescript": "^3.8.3",
     "validator": "^13.0.0"
@@ -44,12 +48,15 @@
     "@types/express": "^4.17.6",
     "@types/express-fileupload": "^1.1.3",
     "@types/express-jwt": "0.0.42",
+    "@types/express-rate-limit": "^5.0.0",
+    "@types/express-slow-down": "^1.3.0",
     "@types/jsonwebtoken": "^8.3.9",
     "@types/mongoose": "^5.7.14",
     "@types/mongoose-paginate": "^5.0.8",
     "@types/mongoose-unique-validator": "^1.0.4",
     "@types/passport": "^1.0.3",
     "@types/passport-local": "^1.0.33",
+    "@types/sharp": "^0.25.0",
     "@types/validator": "^13.0.0"
   }
 }

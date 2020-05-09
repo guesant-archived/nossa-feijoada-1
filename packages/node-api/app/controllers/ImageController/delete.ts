@@ -1,9 +1,9 @@
 import { RequestHandler } from 'express';
-import { Image } from '../../models';
-import { deletePublicImage } from '../../lib/upload-image';
+import { PublicImage } from '../../models';
+import { deletePublicImage } from '../../lib/public-image';
 
 const ControllerDelete: RequestHandler = async (req, res, next) => {
-  return Image.findById(req.params.id)
+  return PublicImage.findById(req.params.id)
     .then(async (image) => {
       if (!image || image.author.toHexString() !== (req as any).payload.id) {
         return res.sendStatus(401);
@@ -14,7 +14,7 @@ const ControllerDelete: RequestHandler = async (req, res, next) => {
         }),
       );
 
-      await Image.findByIdAndDelete(req.params.id);
+      await PublicImage.findByIdAndDelete(req.params.id);
       return res.send();
     })
     .catch(next);

@@ -1,6 +1,6 @@
 import User from './User';
 import Template from './Template';
 import Source from './Source';
-import Image from './Image';
+import PublicImage from './PublicImage';
 
-export { User, Template, Source, Image };
+export { User, Template, Source, PublicImage };

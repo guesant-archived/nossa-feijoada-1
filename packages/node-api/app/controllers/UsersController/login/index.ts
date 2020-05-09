@@ -4,7 +4,7 @@ import { UserDoc } from '../../../models/User';
 import passport from '../../../config/passport';
 
 export const validation = [
-  check('account.email').isEmail().normalizeEmail(),
+  check('account.username').not().isEmpty(),
   check('account.password').isLength({ min: 5 }),
 ];
 
