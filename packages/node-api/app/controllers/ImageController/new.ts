@@ -1,8 +1,12 @@
 import mongoose from 'mongoose';
 import fileUpload from 'express-fileupload';
 import { RequestHandler } from 'express';
-import { uploadImageOptions, uploadPublicImage } from '../../lib/upload-image';
-import PublicImage from '../../models/Image';
+import { uploadImageOptions, uploadPublicImage } from '../../lib/public-image';
+import PublicImage from '../../models/PublicImage';
+
+interface RenamedFileNames {
+  [key: string]: string;
+}
 
 const ControllerNew: RequestHandler = async (req, res, next) => {
   const { type } = req.params;
@@ -11,34 +15,27 @@ const ControllerNew: RequestHandler = async (req, res, next) => {
   }
 
   const imageId = new mongoose.Types.ObjectId();
-  interface NewFileNames {
-    [key: string]: string;
-  }
-  const newFileNames: NewFileNames = {};
+  const renamedFileNames: RenamedFileNames = {};
 
   await Promise.all(
-    Object.entries(req.files || {}).map(async ([_, file], idx) => {
-      const originalFileName = (file as fileUpload.UploadedFile).name;
-      if (newFileNames[originalFileName]) {
-        return;
-      }
-
-      const dest = `${type}/${imageId}-${idx}.png`;
-      await uploadPublicImage(file as fileUpload.UploadedFile, dest);
-      newFileNames[originalFileName] = dest;
+    Object.entries(req.files || {}).map(async ([formname, _file], idx) => {
+      const file = Array.isArray(_file) ? _file[0] : _file;
+      const dest = `gallery/${type}/${imageId}-${idx}.png`;
+      await uploadPublicImage(file, dest).catch(next);
+      renamedFileNames[formname] = dest;
     }),
-  );
+  ).catch(next);
 
   const image = new PublicImage({
     _id: imageId,
     author: (req as any).payload.id,
-    files: Object.values(newFileNames),
+    files: Object.values(renamedFileNames),
   });
 
   image
     .save()
-    .then(() => {
-      return res.json(Object.entries(newFileNames));
+    .then((doc) => {
+      return res.json({ doc, files: renamedFileNames });
     })
     .catch(next);
 };
