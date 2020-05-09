@@ -3,10 +3,12 @@ import loadImage from './load-image';
 
 import * as CONSTANTS from './constants';
 import * as render from './render';
+import * as setupFabric from './setup-fabric';
 import * as computed from './computed';
 export {
   CONSTANTS,
   loadImage,
   fabric,
   render,
+  setupFabric,
   computed,
