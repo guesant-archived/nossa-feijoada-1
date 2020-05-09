@@ -7,31 +7,34 @@ export const validation = [
     .not()
     .isEmpty()
     .trim()
+    .isLength({ max: 64 })
+    .withMessage('Usuário muito longo')
     .matches(/^[a-zA-Z0-9]+$/)
-    .withMessage('Must only contain characters and numbers')
+    .withMessage('O usuário deve conter somente números e caracteres')
     .escape()
     .custom((value: string) => {
       return User.findOne({ username: value }).then((user) => {
         if (user) {
-          return Promise.reject('Username already in use');
+          return Promise.reject('O usuário já está em uso.');
         }
       });
     }),
   check('account.email')
     .isEmail()
+    .withMessage('E-mail inválido')
+    .isLength({ max: 64 })
+    .withMessage('E-mail muito longo')
     .normalizeEmail()
     .custom((value: string) => {
       return User.findOne({ email: value }).then((user) => {
         if (user) {
-          return Promise.reject('E-mail already in use');
+          return Promise.reject('O e-mail já está em uso');
         }
       });
     }),
   check('account.password')
     .isLength({ min: 5 })
-    .withMessage('Must be at least 5 chars long')
-    .matches(/\d/)
-    .withMessage('Must contain a number'),
+    .withMessage('A senha deve conter pelo menos cinco caracteres.'),
 ];
 
 const ControllerNew: RequestHandler = async (req, res, next) => {
