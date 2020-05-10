@@ -2,6 +2,19 @@
   <EditorSection title="Sources">
     <template v-slot:main>
       <div>
+        <ul class="border-gray-700 border-t-2 my-2">
+          <li
+            class="border-gray-700 border-b-2 py-2 pb-3"
+            v-for="(source, idx) in template.sources"
+            :key="`editor--sources--item--${source.sourceId}`"
+          >
+            <div class="flex">
+              <span>{{ sourceDisplayText(idx) }}</span>
+              <span class="mx-1">|</span>
+              <button @click="removeSource(idx)">Remover</button>
+            </div>
+          </li>
+        </ul>
         <button @click="addSource('source')">Adicionar source</button>
         <span class="mx-2">|</span>
         <button @click="addSource('text')">Adicionar texto</button>
@@ -24,6 +37,9 @@ export default {
     EditorSection,
   },
   methods: {
+    removeSource(idx) {
+      this.$emit('sourceRemove', idx);
+    },
     async addSource(type) {
       if (type === 'source') {
         const ref = await addSource.newSource();
@@ -32,6 +48,12 @@ export default {
         const ref = addSource.newText();
         this.$emit('sourceAdd', ref);
       }
+    },
+    sourceDisplayText(idx) {
+      return `#${String(idx + 1).padStart(
+        String(this.template.sources.length).length + 1,
+        '0',
+      )}`;
     },
   },
 };
