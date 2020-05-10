@@ -10,6 +10,7 @@
 
 <script>
 import * as bsimCore from '@bsim/core/dist/build.esm';
+const BASE_BG = '';
 
 const {
   setupFabric: { setupFabricDom },
