@@ -18,14 +18,15 @@ Vue.use(VueRouter)
   {
     path: '/login',
     name: 'login',
-    component: () => import(/* webpackChunkName: "about" */ '../views/Login.vue')
+    component: () =>
+      import(/* webpackChunkName: "login" */ '../views/Login.vue'),
   },
   {
     path: '/signup',
     name: 'signup',
-    component: () => import(/* webpackChunkName: "about" */ '../views/Cadastro.vue')
-  }
-]
+    component: () =>
+      import(/* webpackChunkName: "signup" */ '../views/Cadastro.vue'),
+  },
 
 const router = new VueRouter({
   mode: 'history',
