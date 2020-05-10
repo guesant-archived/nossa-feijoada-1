@@ -1,6 +1,13 @@
 <template>
   <div class="text-white">
     <div class="py-16">
+      <div class="container mx-auto max-w-xl w-full">
+        <EditorSketch
+          :template="template"
+          @changeOption="setOption($event.to, $event.key, $event.value)"
+          @reset="reset"
+        />
+      </div>
       <div class="w-full overflow-auto">
         <div class="mx-auto" ref="canvaswrapper"></div>
       </div>
@@ -10,6 +17,8 @@
 
 <script>
 import * as bsimCore from '@bsim/core/dist/build.esm';
+import EditorSketch from './EditorSketch.vue';
+
 const BASE_BG = '';
 
 const {
@@ -19,6 +28,9 @@ const {
 } = bsimCore.lib;
 
 export default {
+  components: {
+    EditorSketch,
+  },
   data() {
     return {
       fabric: {},
@@ -50,6 +62,9 @@ export default {
     },
     async renderCanvas() {
       await renderCanvas({ fabric: this.fabric, template: this.template });
+    },
+    setOption(to, key, value) {
+      this[to][key] = value;
     },
     setupListeners() {
     },
