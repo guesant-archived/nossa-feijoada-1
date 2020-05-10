@@ -23,6 +23,14 @@
                 @setSourceOption="updateSource(source, $event)"
               />
             </div>
+            <div v-else-if="source.type === 'text'">
+              <EditorSourcesItemText
+                :sid="source.sourceId"
+                :source="source.data"
+                :values="source.computedValues"
+                @render="fabric.requestRenderAll()"
+              />
+            </div>
           </li>
         </ul>
         <button @click="addSource('source')">Adicionar source</button>
@@ -37,6 +45,7 @@
 import * as bsimCore from '@bsim/core/dist/build.esm';
 import EditorSection from '@/components/EditorSection.vue';
 import EditorSourcesItemSlot from './EditorSourcesItemSlot.vue';
+import EditorSourcesItemText from './EditorSourcesItemText.vue';
 
 const {
   sources: { addSource },
@@ -47,6 +56,7 @@ export default {
   components: {
     EditorSection,
     EditorSourcesItemSlot,
+    EditorSourcesItemText,
   },
   methods: {
     updateSource(source, { key, value }) {
