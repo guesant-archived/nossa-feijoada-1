@@ -7,6 +7,12 @@
           @changeOption="setOption($event.to, $event.key, $event.value)"
           @reset="reset"
         />
+        <EditorRender
+          class="border-gray-700 border-t-2"
+          :preview="preview"
+          @render="reset"
+          @changeOption="setOption($event.to, $event.key, $event.value)"
+        />
       </div>
       <div class="w-full overflow-auto">
         <div class="mx-auto" ref="canvaswrapper"></div>
@@ -17,6 +23,7 @@
 
 <script>
 import * as bsimCore from '@bsim/core/dist/build.esm';
+import EditorRender from './EditorRender.vue';
 import EditorSketch from './EditorSketch.vue';
 
 const BASE_BG = '';
@@ -29,6 +36,7 @@ const {
 
 export default {
   components: {
+    EditorRender,
     EditorSketch,
   },
   data() {
@@ -50,6 +58,18 @@ export default {
         height: 720,
       },
     };
+  },
+  watch: {
+    'preview.zoom'() {
+      if (parseFloat(this.preview.zoom)) {
+        this.fabric.setZoom(this.preview.zoom);
+      }
+    },
+    async 'preview.scale'() {
+      if (parseFloat(this.preview.scale)) {
+        await this.reset();
+      }
+    },
   },
   methods: {
     setupCanvas() {
