@@ -1,8 +1,8 @@
-import localforage from 'localforage';
+import store from '../../store';
 import { getInstance } from './http';
 
-const getToken = async () => {
-  const token = await localforage.getItem('token');
+export const getToken = async () => {
+  const { token } = store.getters['getOption']('account')
   return `Bearer ${token}`;
 }
 
