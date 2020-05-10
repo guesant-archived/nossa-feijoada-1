@@ -83,10 +83,21 @@ export default {
     async renderCanvas() {
       await renderCanvas({ fabric: this.fabric, template: this.template });
     },
+    computeSource(source) {
+      source.computedValues = computeSource.compute(source.type, source.data);
+    },
+    computeAll() {
+      this.template.sources.forEach((source) => {
+        this.computeSource(source);
+      });
+    },
     setOption(to, key, value) {
       this[to][key] = value;
     },
     setupListeners() {
+      this.fabric.on('object:modified', () => {
+        this.computeAll();
+      });
     },
     async reset() {
       this.setupCanvas();
