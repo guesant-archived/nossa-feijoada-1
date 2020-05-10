@@ -13,6 +13,16 @@
               <span class="mx-1">|</span>
               <button @click="removeSource(idx)">Remover</button>
             </div>
+            <div v-if="source.type === 'slot'">
+              <EditorSourcesItemSlot
+                :options="source.options"
+                :sid="source.sourceId"
+                :source="source.data"
+                :values="source.computedValues"
+                @render="fabric.requestRenderAll()"
+                @setSourceOption="updateSource(source, $event)"
+              />
+            </div>
           </li>
         </ul>
         <button @click="addSource('source')">Adicionar source</button>
@@ -26,6 +36,7 @@
 <script>
 import * as bsimCore from '@bsim/core/dist/build.esm';
 import EditorSection from '@/components/EditorSection.vue';
+import EditorSourcesItemSlot from './EditorSourcesItemSlot.vue';
 
 const {
   sources: { addSource },
@@ -35,8 +46,12 @@ export default {
   props: { fabric: Object, template: Object },
   components: {
     EditorSection,
+    EditorSourcesItemSlot,
   },
   methods: {
+    updateSource(source, { key, value }) {
+      source.options[key] = value;
+    },
     removeSource(idx) {
       this.$emit('sourceRemove', idx);
     },
