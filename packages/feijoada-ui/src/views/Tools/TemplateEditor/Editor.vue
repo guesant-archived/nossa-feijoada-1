@@ -19,6 +19,7 @@
           :fabric="fabric"
           :template="template"
           @sourceAdd="addSource($event)"
+          @sourceRemove="removeSource($event)"
           class="border-gray-700 border-t-2 border-b-2"
         />
       </div>
@@ -111,6 +112,13 @@ export default {
       const sourceIdx = this.template.sources.push(ref.source);
       const source = this.template.sources[sourceIdx - 1];
       this.computeSource(source);
+    },
+    async removeSource(idx) {
+      const source = this.template.sources[idx];
+      this.fabric.remove(source);
+      this.template.sources.splice(idx, 1);
+
+      await this.reset();
     },
     setupListeners() {
       this.fabric.on('object:modified', () => {
