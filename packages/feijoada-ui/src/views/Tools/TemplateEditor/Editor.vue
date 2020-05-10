@@ -14,6 +14,14 @@
           @changeOption="setOption($event.to, $event.key, $event.value)"
         />
       </div>
+      <div class="container mx-auto max-w-xl w-full mt-2">
+        <EditorSources
+          :fabric="fabric"
+          :template="template"
+          @sourceAdd="addSource($event)"
+          class="border-gray-700 border-t-2 border-b-2"
+        />
+      </div>
       <div class="w-full overflow-auto">
         <div class="mx-auto" ref="canvaswrapper"></div>
       </div>
@@ -24,6 +32,7 @@
 <script>
 import * as bsimCore from '@bsim/core/dist/build.esm';
 import EditorRender from './EditorRender.vue';
+import EditorSources from './EditorSources.vue';
 import EditorSketch from './EditorSketch.vue';
 
 const BASE_BG = '';
@@ -37,6 +46,7 @@ const {
 export default {
   components: {
     EditorRender,
+    EditorSources,
     EditorSketch,
   },
   data() {
@@ -93,6 +103,14 @@ export default {
     },
     setOption(to, key, value) {
       this[to][key] = value;
+    },
+    addSource(ref) {
+      this.fabric.add(ref.object);
+      this.fabric.centerObject(ref.object);
+
+      const sourceIdx = this.template.sources.push(ref.source);
+      const source = this.template.sources[sourceIdx - 1];
+      this.computeSource(source);
     },
     setupListeners() {
       this.fabric.on('object:modified', () => {
