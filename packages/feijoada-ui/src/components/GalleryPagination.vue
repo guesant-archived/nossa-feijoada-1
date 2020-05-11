@@ -52,7 +52,7 @@ export default {
       }
 
       if (this.currentPage === this.totalPages) {
-        return this.totalPages - this.maxVisibleButtons + 1;
+        return Math.max(1, this.totalPages - this.maxVisibleButtons + 1);
       }
 
       return this.currentPage - 1;
@@ -80,7 +80,7 @@ export default {
       return true;
     },
     navigate(page) {
-      if (!this.isValid(page)) return;
+      if (!this.isValid(page) || this.currentPage === page) return;
       this.$emit('input', page);
     },
     especialOp(op) {
