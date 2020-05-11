@@ -35,6 +35,14 @@ Vue.use(VueRouter);
         /* webpackChunkName: "template-editor" */ '../views/Tools/TemplateEditor/Editor.vue'
       ),
   },
+  {
+    path: '/explore/templates/:id',
+    name: 'explore-template-item',
+    component: () =>
+      import(
+        /* webpackChunkName: "explore-template-item" */ '../views/Explore/ExploreTemplateItem.vue'
+      ),
+  },
 ];
 
 const router = new VueRouter({
