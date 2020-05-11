@@ -1,10 +1,20 @@
 <template>
   <div class="h-full">
-    <GalleryItem :img="{uri: (i.template||{}).base||'', alt: ''}">
+    <GalleryItem :img="{ uri: image, alt: '' }">
       <template v-slot:body>
         <div class="p-2">
-          <p class="font-bold">{{i.name}}</p>
-          <p>{{username}}</p>
+          <p class="font-bold">
+            <router-link :to="{ name: itemRoute, params: { id: i._id } }">{{
+              i.name
+            }}</router-link>
+          </p>
+          <p>
+            <router-link
+              :to="{ name: 'user-explore', params: { id: i.author.username } }"
+            >
+              {{ i.author.username }}
+            </router-link>
+          </p>
         </div>
       </template>
       <template v-slot:footer>
@@ -20,7 +30,8 @@ export default {
   components: { GalleryItem },
   props: {
     i: Object,
-    username: String
-  }
-}
+    image: String,
+    itemRoute: String,
+  },
+};
 </script>
