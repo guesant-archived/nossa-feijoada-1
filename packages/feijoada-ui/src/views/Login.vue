@@ -1,5 +1,5 @@
 <template>
-  <div class="flex items-center justify-center h-full">
+  <div class="flex flex-col items-center justify-center h-full">
     <div class="bg-gray-500 p-4 rounded">
       <form @submit.prevent="submit">
         <div class="flex flex-col">
@@ -40,6 +40,24 @@
         <p>{{ error }}</p>
       </form>
     </div>
+    <div class="p-2 mt-1 max-w-xs text-center leading-5">
+      <p class="text-gray-600">
+        Ainda não fez seu cadastro?
+      </p>
+      <p class="text-gray-400">
+        <router-link
+          class="font-bold"
+          :to="{
+            name: 'signup',
+            ...($route.query
+              ? { query: { redirect: $route.query.redirect } }
+              : {}),
+          }"
+        >
+          Clique aqui para se registrar.</router-link
+        >
+      </p>
+    </div>
   </div>
 </template>
 
@@ -64,6 +82,18 @@ export default {
     },
   },
   methods: {
+    proceed() {
+      const { redirect } = this.$route.query;
+      if (redirect) {
+        try {
+          const parsedRedirect = JSON.parse(redirect);
+          return this.$router.push(parsedRedirect);
+        } catch (_) {
+          /**/
+        }
+      }
+      return this.$router.push({ name: 'home' });
+    },
     async submit() {
       if (this.username && this.password) {
         publicRequest
@@ -83,8 +113,10 @@ export default {
                   logged: true,
                 },
               });
-              this.$router.push({ name: 'home' });
             }
+          })
+          .then(() => {
+            this.proceed();
           })
           .catch((res) => {
             const { message = '', errors = [] } = res.response.data;
@@ -99,7 +131,7 @@ export default {
     const { logged } =
       this.$store.getters['settings/getOption']('account') || {};
     if (logged) {
-      this.$router.push({ name: 'home' });
+      this.proceed();
     }
   },
 };
