@@ -2,10 +2,10 @@
   <EditorSection title="Sketch">
     <template v-slot:main>
       <div class="py-4 flex flex-col">
-        <label for="base">Fundo</label>
+        <label for="editor--sketch--base">Fundo</label>
         <input
+          id="editor--sketch--base"
           type="file"
-          id="base"
           @change="loadBackgroundImage($event.target)"
         />
       </div>
@@ -106,6 +106,12 @@ export default {
               value: blobUrl,
             });
             this.$emit('reset');
+
+            this.$emit('changeOption', {
+              to: 'uploadImages',
+              key: 'base',
+              value: file,
+            });
           })
           .catch((err) => {
             console.error(err);
