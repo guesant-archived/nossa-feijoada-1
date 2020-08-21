@@ -4,23 +4,26 @@
       <template v-slot:before>
         <slot name="header">
           <div class="text-center mb-8">
-            <h1 class="text-4xl font-bold uppercase">{{headerTitle}}</h1>
+            <h1 class="text-4xl font-bold uppercase">{{ headerTitle }}</h1>
             <div>
               <form @submit.prevent="$emit('search', searchText)">
-                <input
-                  class="text-black"
-                  type="text"
-                  :placeholder="headerSearchTitle"
-                  v-model="searchText"
-                />
-                <button>Buscar</button>
+                <div class="flex flex-row items-center justify-center">
+                  <input
+                    class="w-40 text-center text-white bg-transparent border-solid border-2 border-gray-800 px-2"
+                    type="text"
+                    :placeholder="headerSearchTitle"
+                    v-model="searchText"
+                  />
+                  <button>Buscar</button>
+                </div>
               </form>
             </div>
           </div>
         </slot>
       </template>
 
-      <div>
+      <div class="flex flex-col">
+        <slot name="main"></slot>
         <GalleryList>
           <slot name="list" />
         </GalleryList>
@@ -52,24 +55,18 @@ export default {
       type: Object,
       default: () => ({
         docs: [],
-        usernames: {}
-      })
+      }),
     },
   },
   components: {
     Gallery,
     GalleryList,
-    GalleryPagination
+    GalleryPagination,
   },
   data() {
     return {
-      searchText: ''
-    }
+      searchText: '',
+    };
   },
-  methods: {
-    getUsername(author) {
-      return this.responseData.usernames[author] || ''
-    }
-  },
-}
+};
 </script>

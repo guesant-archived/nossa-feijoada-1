@@ -27,6 +27,22 @@ Vue.use(VueRouter);
     component: () =>
       import(/* webpackChunkName: "signup" */ '../views/Cadastro.vue'),
   },
+  {
+    path: '/tools/template-editor',
+    name: 'template-editor',
+    component: () =>
+      import(
+        /* webpackChunkName: "template-editor" */ '../views/Tools/TemplateEditor/Editor.vue'
+      ),
+  },
+  {
+    path: '/explore/templates/:id',
+    name: 'explore-template-item',
+    component: () =>
+      import(
+        /* webpackChunkName: "explore-template-item" */ '../views/Explore/ExploreTemplateItem.vue'
+      ),
+  },
 ];
 
 const router = new VueRouter({
